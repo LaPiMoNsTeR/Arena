@@ -10,7 +10,19 @@ public class ArenaPlugin extends JavaPlugin
 	public void onEnable() 
 	{
 		instance = this;
+		
+		loadClans();
 	}
+	
+
+	private void loadClans()
+	{
+		new Clan(1);
+		new Clan(2);
+	}
+	
+	
+	
 	
 	public static ArenaPlugin getInstance()
 	{
