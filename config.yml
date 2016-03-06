@@ -1,3 +1,4 @@
+player-can-change-clan: false
 clans:
   '1':
     name: clans1

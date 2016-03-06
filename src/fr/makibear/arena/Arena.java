@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 public class Arena 
 {
@@ -26,17 +25,16 @@ public class Arena
 	private String name;
 	private ArenaType type = null;
 	private Location[] spawn = new Location[2];
+	private Location end;
 	
-	private ArrayList<Player> players = new ArrayList<Player>();
-	
-	private static ArrayList<Arena> arenas = new ArrayList<>();
+	private static ArrayList<Arena> arenas = new ArrayList<Arena>();
 	
 	public Arena(String name) 
 	{
 		arenas.add(this);
 		this.id = arenas.size();
 		this.name = name;
-		
+
 		this.file = new File(FOLDER_PATH+"/"+this.name+".yml");
 		this.config = YamlConfiguration.loadConfiguration(this.file);
 		
@@ -55,14 +53,20 @@ public class Arena
 		this.type = ArenaType.getByName(this.config.getString(this.name+".type"));
 		
 		if(this.config.get(this.name+".spawn.1") != null)
-		{
 			this.spawn[0] = Location.deserialize(this.config.getConfigurationSection(this.name+".spawn.1").getValues(false));
-		}
 		if(this.config.get(this.name+".spawn.2") != null)
-		{
 			this.spawn[1] = Location.deserialize(this.config.getConfigurationSection(this.name+".spawn.2").getValues(false));
-		}
+		if(this.config.get(this.name+".end") != null)
+			this.end 	  = Location.deserialize(this.config.getConfigurationSection(this.name+".end").getValues(false));
 	}
+	
+	public void delete()
+	{
+		if(this.file.delete() == false)
+			this.file.deleteOnExit();
+		arenas.remove(this);
+	}
+	
 	
 	
 	public int getId()
@@ -85,12 +89,13 @@ public class Arena
 		return this.spawn[i];
 	}
 	
-	
-	public ArrayList<Player> getPlayers()
+	public Location getEnd()
 	{
-		return this.players;
+		return this.end;
 	}
 	
+	
+
 	
 	
 	public void setType(ArenaType type)
@@ -103,16 +108,27 @@ public class Arena
 	public void setSpawn(int i, Location l)
 	{
 		this.spawn[i] = l;
-		this.config.set(this.name+".spawn.1", this.spawn[0].serialize());
-		this.config.set(this.name+".spawn.2", this.spawn[1].serialize());
+		if(this.spawn[0] != null) this.config.set(this.name+".spawn.1", this.spawn[0].serialize());
+		if(this.spawn[1] != null) this.config.set(this.name+".spawn.2", this.spawn[1].serialize());
+		this.save();
+	}
+	
+	public void setEnd(Location l)
+	{
+		this.end = l;
+		this.config.set(this.name+".end", this.end.serialize());
 		this.save();
 	}
 	
 	
 	public boolean isGood()
 	{
-		return this.spawn[0] != null && this.spawn[1] != null && this.type != null;
+		return this.spawn[0] != null && this.spawn[1] != null && this.end != null && this.type != null;
  	}
+	
+
+	
+	
 	
 	
 	public void save()
@@ -138,21 +154,19 @@ public class Arena
 	
 	public enum ArenaType
 	{
-		v1(2),
-		v2(4),
-		v3(6),
-		v4(8);
+		v1,
+		v2,
+		v3,
+		v4;
 		
-		private int maxP;
-		
-		private ArenaType(int maxP) 
+		public int getMaxPlayers()
 		{
-			this.maxP = maxP;
+			return Integer.parseInt(super.toString().substring(1))*2;
 		}
 		
-		public int getMaxPlayer()
+		public int getMaxPlayersSameClan()
 		{
-			return this.maxP;
+			return getMaxPlayers()/2;
 		}
 		
 		
@@ -164,6 +178,13 @@ public class Arena
 					return at;
 			}
 			return null;
+		}
+		
+		@Override
+		public String toString() 
+		{
+			String n = super.toString().substring(1);
+			return n+"v"+n;
 		}
 	}
 }

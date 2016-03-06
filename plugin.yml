@@ -1,0 +1,22 @@
+name: Arena
+version: 0.1
+authors: [MakiBearDY, LaPiMoNsTeR]
+main: fr.makibear.arena.ArenaPlugin
+commands:
+  arena:
+    description: Arena commands
+    permission: arena.admin
+    usage: /arena
+  clan:
+    description: Clan commands
+    permission: arena.admin
+    usage: /clan
+  duel:
+    description: Duel commands
+    permission: arena.duel
+    usage: /duel
+permissions:
+  arena.admin:
+    default: op
+  arena.duel:
+    default: true

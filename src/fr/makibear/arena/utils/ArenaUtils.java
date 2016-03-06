@@ -4,9 +4,20 @@ import java.util.ArrayList;
 
 import fr.makibear.arena.Arena;
 import fr.makibear.arena.Arena.ArenaType;
+import fr.makibear.arena.Duel;
 
 public class ArenaUtils 
 {
+	public static Arena getByName(String name)
+	{
+		for(Arena a : Arena.getArenas())
+		{
+			if(a.getName().equals(name))
+				return a;
+		}
+		return null;
+	}
+	
 	public static ArrayList<Arena> getByType(ArenaType type)
 	{
 		ArrayList<Arena> aL = new ArrayList<Arena>();
@@ -16,5 +27,15 @@ public class ArenaUtils
 				aL.add(a);
 		}
 		return aL;
+	}
+	
+	public static boolean isUsed(Arena a)
+	{
+		for(Duel duel : Duel.getDuels())
+		{
+			if(duel.getArena() == a)
+				return true;
+		}
+		return false;
 	}
 }
