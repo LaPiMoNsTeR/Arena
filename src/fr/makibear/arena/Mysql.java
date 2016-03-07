@@ -39,13 +39,22 @@ public class Mysql
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
+			Bukkit.getLogger().warning(this.host);
+			Bukkit.getLogger().warning(this.user);
+			Bukkit.getLogger().warning(this.password);
 			this.connection = DriverManager.getConnection(this.host, this.user, this.password);
 			
 			this.init();
 		} 
-		catch (ClassNotFoundException | SQLException e) 
+		catch (ClassNotFoundException e) 
 		{
 			e.printStackTrace();
+			Bukkit.getLogger().severe("Driver introuvable.");
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			Bukkit.getLogger().severe("Connexion à la base de données échoué.");
 		}
 	}
 	
