@@ -47,6 +47,7 @@ public class Clan
 	
 	private int id;
 	private String name;
+	private int point;
 	
 	private List<String> all_players = new ArrayList<String>();
 	private List<Player> online_players = new ArrayList<Player>();
@@ -68,6 +69,8 @@ public class Clan
 			this.saveUsers();
 		}
 		
+		this.point = ArenaPlugin.getInstance().getSQL().getClanPoint(this);
+		
 		this.all_players = pConfig.getStringList(this.id+"");
 	}
 	
@@ -80,6 +83,17 @@ public class Clan
 	public String getName()
 	{
 		return this.name;
+	}
+	
+	public int getPoint()
+	{
+		return this.point;
+	}
+	
+	
+	public void setPoint(int point)
+	{
+		this.point = point;
 	}
 	
 	

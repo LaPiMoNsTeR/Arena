@@ -1,7 +1,6 @@
 package fr.makibear.arena.utils;
 
 import org.bukkit.entity.Player;
-
 import fr.makibear.arena.Clan;
 import fr.makibear.arena.Duel;
 

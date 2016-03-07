@@ -19,6 +19,8 @@ public class ArenaPlugin extends JavaPlugin
 {
 	private static ArenaPlugin instance;
 	
+	private Mysql sql;
+	
 	@Override
 	public void onEnable() 
 	{
@@ -26,6 +28,7 @@ public class ArenaPlugin extends JavaPlugin
 		
 		loadCommands();
 		loadEvents();
+		loadSQL();
 		loadClans();
 		loadArenas();
 		loadOnlinePlayers();
@@ -75,6 +78,16 @@ public class ArenaPlugin extends JavaPlugin
 			new Arena(f.replace(".yml", ""));
 	}
 	
+	private void loadSQL()
+	{
+		this.sql = new Mysql();
+	}
+
+	
+	public Mysql getSQL()
+	{
+		return this.sql;
+	}
 	
 	
 	public static ArenaPlugin getInstance()

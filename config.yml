@@ -1,3 +1,9 @@
+sql:
+  host: localhost
+  port: 3306
+  user: username
+  password: password
+  db: database
 player-can-change-clan: false
 clans:
   '1':
