@@ -126,7 +126,7 @@ public class Mysql
 	
 	public void init()
 	{
-		Bukkit.getServer().getLogger().info("Création des tables.");
+		Bukkit.getServer().getLogger().info("Vérification des tables...");
 		this.execute("CREATE TABLE IF NOT EXISTS `duel_stats` (`id` int(11) NOT NULL AUTO_INCREMENT,`arena` varchar(50) NOT NULL,`type` varchar(10) NOT NULL,`clan1` text NOT NULL,`clan2` text NOT NULL,`winner` int(2) NOT NULL,PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;", new Object[0]);
 	}
 	
