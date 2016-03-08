@@ -65,10 +65,12 @@ public class Duel
 	{
 		ChatUtils.sendMessage("Le clan "+c.getName()+" a gagné le duel.", this.players.toArray(new Player[this.players.size()]));
 		ArenaPlugin.getInstance().getSQL().saveDuel(this, c);
+		c.setPoint(c.getPoint()+1);
 		ArrayList<Player> survivant = this.players;
 		this.players.removeAll(this.dplayers);
 		for(Player p : survivant)
 			p.teleport(this.arena.getEnd());
+		this.players.clear();
 	}
 	
 	

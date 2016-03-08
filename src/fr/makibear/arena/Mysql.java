@@ -7,9 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import fr.makibear.arena.utils.ClanUtils;
 import fr.makibear.arena.utils.DuelUtils;
@@ -39,9 +41,6 @@ public class Mysql
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			Bukkit.getLogger().warning(this.host);
-			Bukkit.getLogger().warning(this.user);
-			Bukkit.getLogger().warning(this.password);
 			this.connection = DriverManager.getConnection(this.host, this.user, this.password);
 			
 			this.init();
@@ -50,11 +49,15 @@ public class Mysql
 		{
 			e.printStackTrace();
 			Bukkit.getLogger().severe("Driver introuvable.");
+			Bukkit.getLogger().severe("Arrêt du plugin.");
+			ArenaPlugin.getInstance().getPluginLoader().disablePlugin(ArenaPlugin.getInstance());
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
 			Bukkit.getLogger().severe("Connexion à la base de données échoué.");
+			Bukkit.getLogger().severe("Arrêt du plugin.");
+			ArenaPlugin.getInstance().getPluginLoader().disablePlugin(ArenaPlugin.getInstance());
 		}
 	}
 	
@@ -66,7 +69,7 @@ public class Mysql
 			for(int i=0;i<o.length;i++)
 				statement.setObject(i+1, o[i]);
 			statement.executeUpdate();
-		} 
+		}
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
@@ -98,7 +101,11 @@ public class Mysql
 		{
 			statement = this.connection.prepareStatement(r);
 			for(int i=0;i<values.length;i++)
-				statement.setObject(i+1, values[i]);
+			{
+				if(NumberUtils.isNumber(values[i]+""))
+					statement.setInt(i+1, (int) values[i]);
+				else statement.setString(i+1, (String) values[i]);
+			}
 			
 			statement.execute();
 		} 
@@ -108,13 +115,18 @@ public class Mysql
 		}
 	}
 	
-	public ResultSet read(String sql, Object[] o)
+	public ResultSet read(String sql, Object[] values)
 	{
 		try
 		{
+			Bukkit.getLogger().warning(sql);
 			PreparedStatement statement = this.connection.prepareStatement(sql);
-			for(int i=0;i<o.length;i++)
-				statement.setObject(i+1, o[i]);
+			for(int i=0;i<values.length;i++)
+			{
+				if(NumberUtils.isNumber(values[i]+""))
+					statement.setInt(i+1, (int) values[i]);
+				else statement.setString(i+1, (String) values[i]);
+			}
 			return statement.executeQuery();
 		}
 		catch(SQLException e)
@@ -132,8 +144,13 @@ public class Mysql
 	
 	public void saveDuel(Duel d, Clan w)
 	{
+		String c1 = "", c2 = "";
+		for(Player p : DuelUtils.getPlayerInClan(d, ClanUtils.getById(1)))
+			c1 += p.getName()+",";
+		for(Player p : DuelUtils.getPlayerInClan(d, ClanUtils.getById(2)))
+			c2 += p.getName()+",";
 		this.insert("duel_stats", new String[] {"arena","type","clan1","clan2","winner"}, 
-									new Object[] {d.getArena().getName(), d.getArena().getType().toString(), DuelUtils.getPlayerInClan(d, ClanUtils.getById(1)), DuelUtils.getPlayerInClan(d, ClanUtils.getById(2)), w.getId()});
+									new Object[] {d.getArena().getName(), d.getArena().getType().toString(), c1, c2, w.getId()});
 	}
 	
 	
