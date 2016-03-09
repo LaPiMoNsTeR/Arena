@@ -71,12 +71,12 @@ public class Duel
 		for(Player p : c.getOnlinePlayers())
 		{
 			APlayer ap = APlayer.get(p);
-			ap.setWin(ap.getWin()+1);
+			ap.setWin(ap.getWin()+Config.XP_WIN_PER_DUEL);
 		}
 		for(Player p : ClanUtils.getOpposite(c).getOnlinePlayers())
 		{
 			APlayer ap = APlayer.get(p);
-			ap.setLoose(ap.getLoose()+1);
+			ap.setLoose(ap.getLoose()+Config.XP_LOOSE_PER_DUEL);
 		}
 		ArrayList<Player> survivant = this.players;
 		this.players.removeAll(this.dplayers);

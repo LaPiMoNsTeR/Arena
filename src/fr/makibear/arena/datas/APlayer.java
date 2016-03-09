@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import fr.makibear.arena.ArenaPlugin;
+import fr.makibear.arena.Config;
 
 public class APlayer 
 {
@@ -35,16 +36,16 @@ public class APlayer
 				if(p_l_c1.contains(this.getPlayer().getName()))
 				{
 					if(r.getInt("winner") == 1)
-						win++;
+						win = win + Config.XP_WIN_PER_DUEL;
 					else if(r.getInt("winner") == 2) 
-						loose++;
+						loose = loose + Config.XP_LOOSE_PER_DUEL;
 				}
 				else if(p_l_c2.contains(this.getPlayer().getName()))
 				{
 					if(r.getInt("winner") == 2)
-						win++;
+						win = win + Config.XP_WIN_PER_DUEL;
 					else if(r.getInt("winner") == 1) 
-						loose++;
+						loose = loose + Config.XP_LOOSE_PER_DUEL;
 				}
  			}
 		} 
