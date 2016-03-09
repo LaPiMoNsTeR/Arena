@@ -17,7 +17,7 @@ public class APlayer
 {
 	private static ArrayList<APlayer> aplayers = new ArrayList<APlayer>();
 	private UUID uuid;
-	private int win = 0, loose = 0;
+	private int win = 0, loose = 0, xp = 0;
 	
 	public APlayer(Player p) 
 	{
@@ -36,17 +36,21 @@ public class APlayer
 				if(p_l_c1.contains(this.getPlayer().getName()))
 				{
 					if(r.getInt("winner") == 1)
-						win = win + Config.XP_WIN_PER_DUEL;
+						this.win = this.win + Config.XP_WIN_PER_DUEL;
 					else if(r.getInt("winner") == 2) 
-						loose = loose + Config.XP_LOOSE_PER_DUEL;
+						this.loose = this.loose + Config.XP_LOOSE_PER_DUEL;
 				}
 				else if(p_l_c2.contains(this.getPlayer().getName()))
 				{
 					if(r.getInt("winner") == 2)
-						win = win + Config.XP_WIN_PER_DUEL;
+						this.win = this.win + Config.XP_WIN_PER_DUEL;
 					else if(r.getInt("winner") == 1) 
-						loose = loose + Config.XP_LOOSE_PER_DUEL;
+						this.loose = this.loose + Config.XP_LOOSE_PER_DUEL;
 				}
+				this.xp = this.win - this.loose;
+				
+				if(this.xp < 0)
+					this.xp = 0;
  			}
 		} 
 		catch (SQLException e) 
@@ -81,6 +85,11 @@ public class APlayer
 		return this.loose;
 	}
 	
+	public int getXp()
+	{
+		return this.xp;
+	}
+	
 	public void setWin(int i)
 	{
 		this.win = i;
@@ -89,6 +98,13 @@ public class APlayer
 	public void setLoose(int i)
 	{
 		this.loose = i;
+	}
+	
+	public void setXp(int i)
+	{
+		this.xp = i;
+		if(this.xp < 0)
+			this.xp = 0;
 	}
 	
 	
