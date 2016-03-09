@@ -35,4 +35,14 @@ public class ClanUtils
 		}
 		return null;
 	}
+	
+	public static Clan getOpposite(Clan c)
+	{
+		for(Clan t : Clan.getClans())
+		{
+			if(c != t)
+				return t;
+		}
+		return null;
+	}
 }

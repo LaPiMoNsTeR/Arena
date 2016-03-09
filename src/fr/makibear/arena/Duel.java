@@ -6,7 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import fr.makibear.arena.datas.APlayer;
 import fr.makibear.arena.utils.ChatUtils;
+import fr.makibear.arena.utils.ClanUtils;
 import fr.makibear.arena.utils.PlayerUtils;
 
 public class Duel 
@@ -66,6 +68,16 @@ public class Duel
 		ChatUtils.sendMessage("Le clan "+c.getName()+" a gagné le duel.", this.players.toArray(new Player[this.players.size()]));
 		ArenaPlugin.getInstance().getSQL().saveDuel(this, c);
 		c.setPoint(c.getPoint()+1);
+		for(Player p : c.getOnlinePlayers())
+		{
+			APlayer ap = APlayer.get(p);
+			ap.setWin(ap.getWin()+1);
+		}
+		for(Player p : ClanUtils.getOpposite(c).getOnlinePlayers())
+		{
+			APlayer ap = APlayer.get(p);
+			ap.setLoose(ap.getLoose()+1);
+		}
 		ArrayList<Player> survivant = this.players;
 		this.players.removeAll(this.dplayers);
 		for(Player p : survivant)
