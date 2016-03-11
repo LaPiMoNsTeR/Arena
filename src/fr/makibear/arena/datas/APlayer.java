@@ -37,12 +37,12 @@ public class APlayer
 				{
 					if(r.getInt("winner") == 1)
 					{
-						this.win = this.win + Config.XP_WIN_PER_DUEL;
-						this.xp = this.win + Config.XP_WIN_PER_DUEL;
+						this.win = this.win + 1;
+						this.xp = this.xp + Config.XP_WIN_PER_DUEL;
 					}
 					else if(r.getInt("winner") == 2) 
 					{
-						this.loose = this.loose + Config.XP_LOOSE_PER_DUEL;
+						this.loose = this.loose + 1;
 						if(this.xp >= Config.XP_LOOSE_PER_DUEL)
 							this.xp = this.xp - Config.XP_LOOSE_PER_DUEL;
 					}
@@ -51,12 +51,12 @@ public class APlayer
 				{
 					if(r.getInt("winner") == 2)
 					{
-						this.win = this.win + Config.XP_WIN_PER_DUEL;
-						this.xp = this.win + Config.XP_WIN_PER_DUEL;
+						this.win = this.win + 1;
+						this.xp = this.xp + Config.XP_WIN_PER_DUEL;
 					}
 					else if(r.getInt("winner") == 1) 
 					{
-						this.loose = this.loose + Config.XP_LOOSE_PER_DUEL;
+						this.loose = this.loose + 1;
 						if(this.xp >= Config.XP_LOOSE_PER_DUEL)
 							this.xp = this.xp - Config.XP_LOOSE_PER_DUEL;
 					}
