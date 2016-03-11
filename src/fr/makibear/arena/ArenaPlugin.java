@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.makibear.arena.datas.APlayer;
 import fr.makibear.arena.listeners.PlayerBlockListener;
 import fr.makibear.arena.listeners.PlayerChatListener;
 import fr.makibear.arena.listeners.PlayerDamageListener;
@@ -32,6 +33,9 @@ public class ArenaPlugin extends JavaPlugin
 		loadClans();
 		loadArenas();
 		loadOnlinePlayers();
+		
+		for(Player p : Bukkit.getServer().getOnlinePlayers())
+			new APlayer(p);
 	}
 	
 	private void loadCommands()
