@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import fr.makibear.arena.datas.APlayer;
 import fr.makibear.arena.utils.ClanUtils;
 import fr.makibear.arena.utils.DuelUtils;
 
@@ -151,6 +152,16 @@ public class Mysql
 			c2 += p.getName()+",";
 		this.insert("duel_stats", new String[] {"arena","type","clan1","clan2","winner"}, 
 									new Object[] {d.getArena().getName(), d.getArena().getType().toString(), c1, c2, w.getId()});
+	}
+	
+	public void registerPlayer(APlayer ap)
+	{
+		this.insert("duel_player", new String[] {"player", "xp"}, new Object[] {ap.getPlayer().getName(), 0});
+	}
+	
+	public void savePlayer(APlayer ap)
+	{
+		this.execute("UPDATE duel_player SET xp=? WHERE player=?", new Object[] {ap.getXp(), ap.getPlayer().getName()});
 	}
 	
 	

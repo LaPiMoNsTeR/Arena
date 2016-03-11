@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import fr.makibear.arena.ArenaPlugin;
-import fr.makibear.arena.Config;
 
 public class APlayer 
 {
@@ -25,6 +24,7 @@ public class APlayer
 		this.uuid = p.getUniqueId();
 		
 		ResultSet r = ArenaPlugin.getInstance().getSQL().read("SELECT * FROM duel_stats", new Object[0]);
+		ResultSet rXP = ArenaPlugin.getInstance().getSQL().read("SELECT * FROM duel_player WHERE player=?", new Object[] {p.getName()});
 		try 
 		{
 			while(r.next())
@@ -38,13 +38,10 @@ public class APlayer
 					if(r.getInt("winner") == 1)
 					{
 						this.win = this.win + 1;
-						this.xp = this.xp + Config.XP_WIN_PER_DUEL;
 					}
 					else if(r.getInt("winner") == 2) 
 					{
 						this.loose = this.loose + 1;
-						if(this.xp >= Config.XP_LOOSE_PER_DUEL)
-							this.xp = this.xp - Config.XP_LOOSE_PER_DUEL;
 					}
 				}
 				else if(p_l_c2.contains(this.getPlayer().getName()))
@@ -52,16 +49,21 @@ public class APlayer
 					if(r.getInt("winner") == 2)
 					{
 						this.win = this.win + 1;
-						this.xp = this.xp + Config.XP_WIN_PER_DUEL;
 					}
 					else if(r.getInt("winner") == 1) 
 					{
 						this.loose = this.loose + 1;
-						if(this.xp >= Config.XP_LOOSE_PER_DUEL)
-							this.xp = this.xp - Config.XP_LOOSE_PER_DUEL;
 					}
 				}
- 			}
+				
+				if(rXP.next())
+					this.xp = rXP.getInt("xp");
+				else
+				{
+					this.xp = 0;
+					ArenaPlugin.getInstance().getSQL().registerPlayer(this);
+				}
+			}
 		} 
 		catch (SQLException e) 
 		{
@@ -115,6 +117,7 @@ public class APlayer
 		this.xp = i;
 		if(this.xp < 0)
 			this.xp = 0;
+		ArenaPlugin.getInstance().getSQL().savePlayer(this);
 	}
 	
 	
