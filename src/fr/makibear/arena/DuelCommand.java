@@ -38,23 +38,24 @@ public class DuelCommand implements CommandExecutor
 				p.sendMessage("[COMMAND] /duel join [1v1 / 2v2 / 3v3 / 4v4]");
 			else if(WLUtils.isIn(p) == false)
 			{
-				WaitingLine wl;
-				if((wl = WLUtils.get()) == null)
+				ArenaType type;
+				if((type = ArenaType.getByName(args[1])) != null)
 				{
-					Bukkit.broadcastMessage("new");
-					if(ArenaType.getByName(args[1]) != null)
+					WaitingLine wl;
+					if((wl = WLUtils.get(type)) == null)
 					{
+						Bukkit.broadcastMessage("new");
 						wl = new WaitingLine(ArenaType.getByName(args[1]));
 						wl.add(p);
 						Bukkit.broadcastMessage(p.getName()+" a boot un waiting line "+wl.getType().toString());
 					}
-					else p.sendMessage("Ce type d'arène n'existe pas.");
+					else 
+					{
+						Bukkit.broadcastMessage("exist");
+						wl.add(p);
+					}
 				}
-				else 
-				{
-					Bukkit.broadcastMessage("exist");
-					wl.add(p);
-				}
+				else p.sendMessage("Ce type d'arène n'existe pas.");
 			}
 			else p.sendMessage("Vous êtes déjà dans une file d'attente.");
 		}
