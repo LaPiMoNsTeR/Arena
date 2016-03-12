@@ -24,7 +24,7 @@ public class ArenaCommand implements CommandExecutor
 			{
 				String arenas = "Arènes : ";
 				for(Arena a : Arena.getArenas())
-					arenas += (a.isGood() ? "§a" : "c")+a.getName()+", ";
+					arenas += (a.isGood() ? "§a" : "c")+a.getName()+"("+a.getType().toString()+"), ";
 				arenas = arenas.substring(0, arenas.length()-2)+".";
 				p.sendMessage(arenas);
 			}
