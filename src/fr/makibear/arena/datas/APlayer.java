@@ -55,20 +55,19 @@ public class APlayer
 						this.loose = this.loose + 1;
 					}
 				}
-				
-				
 			}
 			
-			boolean b = false;
-			while(rXP.next())
-				b = true;
-			if(b)
+			r.close();
+			
+			if(rXP.next())
 				this.xp = rXP.getInt("xp");
 			else
 			{
 				this.xp = 0;
 				ArenaPlugin.getInstance().getSQL().registerPlayer(this);
 			}
+			
+			rXP.close();
 		} 
 		catch (SQLException e) 
 		{
