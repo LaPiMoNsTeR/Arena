@@ -18,8 +18,18 @@ public class ArenaCommand implements CommandExecutor
 		if(sender instanceof Player == false) return true;
 		
 		Player p = (Player) sender;
-		
-		if(args.length < 2)
+		if(args.length == 1)
+		{
+			if(args[0].equalsIgnoreCase("list"))
+			{
+				String arenas = "Arènes : ";
+				for(Arena a : Arena.getArenas())
+					arenas += (a.isGood() ? "§a" : "c")+a.getName()+", ";
+				arenas = arenas.substring(0, arenas.length()-2)+".";
+				p.sendMessage(arenas);
+			}
+		}
+		else if(args.length < 2)
 		{
 			p.sendMessage("[COMMAND] /arena <name> <action>");
 			p.sendMessage("[ACTION] create, setspawn1, setspawn2, setend, settype, isgood");
