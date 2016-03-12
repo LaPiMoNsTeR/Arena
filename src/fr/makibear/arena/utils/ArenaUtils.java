@@ -1,6 +1,7 @@
 package fr.makibear.arena.utils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import fr.makibear.arena.Arena;
 import fr.makibear.arena.Arena.ArenaType;
@@ -27,6 +28,19 @@ public class ArenaUtils
 				aL.add(a);
 		}
 		return aL;
+	}
+	
+	public static ArrayList<Arena> getGoodByType(ArenaType type)
+	{
+		ArrayList<Arena> gA = getByType(type);
+		Iterator<Arena> iT = gA.iterator();
+		while(iT.hasNext())
+		{
+			Arena a = iT.next();
+			if(a.isGood() == false)
+				iT.remove();
+		}
+		return gA;
 	}
 	
 	public static boolean isUsed(Arena a)

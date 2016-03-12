@@ -42,7 +42,7 @@ public class DuelCommand implements CommandExecutor
 				ArenaType type;
 				if((type = ArenaType.getByName(args[1])) != null)
 				{
-					if(ArenaUtils.getByType(type).size() == 0)
+					if(ArenaUtils.getGoodByType(type).size() == 0)
 					{
 						p.sendMessage("Aucune arène "+type.toString()+" n'est disponible.");
 						return true;
