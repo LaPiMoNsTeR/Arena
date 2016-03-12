@@ -56,16 +56,18 @@ public class APlayer
 					}
 				}
 				
-				boolean b = false;
-				while(rXP.next())
-					b = true;
-				if(b)
-					this.xp = rXP.getInt("xp");
-				else
-				{
-					this.xp = 0;
-					ArenaPlugin.getInstance().getSQL().registerPlayer(this);
-				}
+				
+			}
+			
+			boolean b = false;
+			while(rXP.next())
+				b = true;
+			if(b)
+				this.xp = rXP.getInt("xp");
+			else
+			{
+				this.xp = 0;
+				ArenaPlugin.getInstance().getSQL().registerPlayer(this);
 			}
 		} 
 		catch (SQLException e) 
