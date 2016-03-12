@@ -34,8 +34,6 @@ public class ArenaPlugin extends JavaPlugin
 		loadArenas();
 		loadOnlinePlayers();
 		
-		for(Player p : Bukkit.getServer().getOnlinePlayers())
-			new APlayer(p);
 	}
 	
 	private void loadCommands()
@@ -67,6 +65,7 @@ public class ArenaPlugin extends JavaPlugin
 	{
 		for(Player p : Bukkit.getServer().getOnlinePlayers())
 		{
+			new APlayer(p);
 			System.out.println(PlayerUtils.inClan(p.getName()));
 			if(PlayerUtils.inClan(p.getName()))
 				PlayerUtils.getClan(p.getName()).connect(p);

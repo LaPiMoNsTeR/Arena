@@ -56,7 +56,10 @@ public class APlayer
 					}
 				}
 				
-				if(rXP.next())
+				boolean b = false;
+				while(rXP.next())
+					b = true;
+				if(b)
 					this.xp = rXP.getInt("xp");
 				else
 				{
