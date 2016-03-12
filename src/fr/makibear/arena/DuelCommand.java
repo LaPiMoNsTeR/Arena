@@ -1,5 +1,6 @@
 package fr.makibear.arena;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -40,17 +41,18 @@ public class DuelCommand implements CommandExecutor
 				WaitingLine wl;
 				if((wl = WLUtils.get()) == null)
 				{
-					//Bukkit.broadcastMessage("new");
+					Bukkit.broadcastMessage("new");
 					if(ArenaType.getByName(args[1]) != null)
 					{
 						wl = new WaitingLine(ArenaType.getByName(args[1]));
 						wl.add(p);
+						Bukkit.broadcastMessage(p.getName()+" a boot un waiting line "+wl.getType().toString());
 					}
 					else p.sendMessage("Ce type d'arène n'existe pas.");
 				}
 				else 
 				{
-					//Bukkit.broadcastMessage("exist");
+					Bukkit.broadcastMessage("exist");
 					wl.add(p);
 				}
 			}
