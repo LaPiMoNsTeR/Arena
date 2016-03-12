@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fr.makibear.arena.Arena.ArenaType;
+import fr.makibear.arena.utils.ArenaUtils;
 import fr.makibear.arena.utils.PlayerUtils;
 import fr.makibear.arena.utils.WLUtils;
 
@@ -41,6 +42,11 @@ public class DuelCommand implements CommandExecutor
 				ArenaType type;
 				if((type = ArenaType.getByName(args[1])) != null)
 				{
+					if(ArenaUtils.getByType(type).size() == 0)
+					{
+						p.sendMessage("Aucune arène "+type.toString()+" n'est disponible.");
+						return true;
+					}
 					WaitingLine wl;
 					if((wl = WLUtils.get(type)) == null)
 					{
