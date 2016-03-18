@@ -1,8 +1,10 @@
 package fr.makibear.arena;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -17,6 +19,7 @@ public class Duel
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Player> dplayers = new  ArrayList<Player>();
 	private Prestart prestart;
+	private HashMap<Player, Location> lastPos = new HashMap<Player, Location>();
 	
 	private static ArrayList<Duel> duels = new ArrayList<Duel>();
 	
@@ -31,6 +34,7 @@ public class Duel
 		{
 			Clan c = PlayerUtils.getClan(p);
 			p.teleport(this.arena.getSpawn(c.getId()-1));
+			this.lastPos.put(p, p.getLocation());
 		}
 		
 		this.prestart = new Prestart();
@@ -83,7 +87,7 @@ public class Duel
 		ArrayList<Player> survivant = this.players;
 		this.players.removeAll(this.dplayers);
 		for(Player p : survivant)
-			p.teleport(this.arena.getEnd());
+			p.teleport(this.lastPos.get(p));
 		this.players.clear();
 	}
 	
@@ -97,6 +101,11 @@ public class Duel
 	public Arena getArena()
 	{
 		return this.arena;
+	}
+	
+	public HashMap<Player, Location> getLastLocation()
+	{
+		return this.lastPos;
 	}
 	
 	public ArrayList<Player> getPlayers()

@@ -6,7 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import fr.makibear.arena.ArenaPlugin;
 import fr.makibear.arena.Clan;
 import fr.makibear.arena.Duel;
 import fr.makibear.arena.utils.ClanUtils;
@@ -18,12 +20,22 @@ public class PlayerDeathListener implements Listener
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e)
 	{
-		Player p = e.getEntity();
+		final Player p = e.getEntity();
 		if(PlayerUtils.inDuel(p))
 		{
-			Duel d = DuelUtils.getByPlayer(p);
+			final Duel d = DuelUtils.getByPlayer(p);
 			if(d.getDeathPlayers().contains(p) == false)
 			{
+				new BukkitRunnable()
+				{
+					
+					@Override
+					public void run() 
+					{
+						d.getLastLocation().get(p);
+					}
+				}.runTaskLater(ArenaPlugin.getInstance(), 20L);
+				
 				d.getDeathPlayers().add(p);
 				e.getDrops().clear();
 				e.setDroppedExp(0);
